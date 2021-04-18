@@ -39,8 +39,26 @@ const geoData = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_h
 
 
 d3.json(geoData).then(data => {
-    console.log(data)
+    console.log(data);
+    function styling (feature) {
+        return {
+            opacity: 1,
+            fillOpacity: 1,
+            color: "Red",
+            radius : findRadius (feature.properties.mag),
+            fillColor: findColor (feature.geometry.coordinates[2]),
+            stroke: true,
+            weight: 0.5
+        };
+    };
 
+    function findRadius (magnitude) {
+        if (magnitude === 0) {
+            return 1;
+        }
+        return (magnitude * 20);
+        
+    };
     L.geojson(data, {
         pointtolayer: (feature, latlng) => {
             return L.circleMarker(latlng);
