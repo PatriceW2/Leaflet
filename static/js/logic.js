@@ -59,17 +59,34 @@ d3.json(geoData).then(data => {
         return (magnitude * 20);
         
     };
-    L.geojson(data, {
-        pointtolayer: (feature, latlng) => {
-            return L.circleMarker(latlng);
-        },
 
-    onEachFeature: (feature, layer) => {
-        layer.bindPopup("Magnitude:" + feature.properties.mag 
-        + "<br> Depth:" + feature.geometry.coordinates[2]
-        )
+    function findColor(depth) {
+        switch(true){
+            case depth > 90:
+                return "Blue";
+            case depth > 70:
+                return "Purple";
+            //keep this pattern going until 10
+            default:
+                return "Black";
+        }
+    }
+
+    L.geoJson(data, {
+        pointtolayer: (feature, latlng) => {
+            return L.circle(latlng);
+        },
+        style: styling,
+
+        onEachFeature: (feature, layer) => {
+            layer.bindPopup("Magnitude:" + feature.properties.mag 
+            + "<br> Depth:" + feature.geometry.coordinates[2] 
+            + "<br> Title:" + feature.properties.title
+            )
     }
     }).addTo(myMap);
+
+    //add legend here
 
 })
 
