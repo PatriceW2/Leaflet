@@ -39,7 +39,21 @@ const geoData = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_h
 
 
 d3.json(geoData).then(data => {
-    console.log(data);
+    console.log(data)
+
+    L.geojson(data, {
+        pointtolayer: (feature, latlng) => {
+            return L.circleMarker(latlng);
+        },
+
+    onEachFeature: (feature, layer) => {
+        layer.bindPopup("Magnitude:" + feature.properties.mag 
+        + "<br> Depth:" + feature.geometry.coordinates[2]
+        )
+    }
+    }).addTo(myMap);
 
 })
+
+
 
