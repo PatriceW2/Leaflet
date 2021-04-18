@@ -95,6 +95,14 @@ d3.json(geoData).then(data => {
     }).addTo(myMap);
 
     //add legend here
+    const legend = L.control({ position: "bottomright"});
+    legend.onAdd = function() {
+        const div = L.DomUtil.create("div", "info legand");
+        const limits = geojason.options.limits;
+        const labels = []
+    };
+    legend.addto(myMap)
+
 
 })
 
