@@ -56,7 +56,7 @@ d3.json(geoData).then(data => {
         if (magnitude === 0) {
             return 1;
         }
-        return (magnitude * 20);
+        return (magnitude * 200000);
         
     };
 
@@ -73,6 +73,7 @@ d3.json(geoData).then(data => {
     }
 
     L.geoJson(data, {
+        
         pointtolayer: (feature, latlng) => {
             return new L.Circle(latlng, {
                 opacity: 1,
@@ -87,24 +88,25 @@ d3.json(geoData).then(data => {
         //style: styling,
 
         onEachFeature: (feature, layer) => {
-            layer.bindPopup("Magnitude:" + feature.properties.mag 
-            + "<br> Depth:" + feature.geometry.coordinates[2] 
-            + "<br> Title:" + feature.properties.title
+            layer.bindPopup("Magnitude: " + feature.properties.mag 
+            + "<br> Depth: " + feature.geometry.coordinates[2] 
+            + "<br> Title: " + feature.properties.title
             )
     }
     }).addTo(myMap);
 
     //add legend here
-    const legend = L.control({ position: "bottomright"});
+    const legend = L.control({ position: "bottomright", fillColor : "white"});
     legend.onAdd = function() {
-        const div = L.DomUtil.create("div", "info legand");
-        const limits = geojason.options.limits;
-        const labels = []
+        const div = L.DomUtil.create("div", "info legend");
+        const limits = ["<10", "30", "50", "70", "90"];
+        const labels = [];
+
+        div.innerHTML = `<h3>Earthquake Depth</h3>`;
     };
-    legend.addto(myMap)
+    legend.addto(myMap);
 
 
-})
-
+});
 
 
