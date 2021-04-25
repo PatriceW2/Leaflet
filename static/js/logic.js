@@ -53,9 +53,9 @@ d3.json(geoData).then(data => {
     //};
 
     function findRadius (magnitude) {
-        if (magnitude === 0) {
-            return 1;
-        }
+        //if (magnitude === 0) {
+            //return 1;
+        //}
         return (magnitude * 200000);
         
     };
@@ -63,10 +63,16 @@ d3.json(geoData).then(data => {
     function findColor(depth) {
         switch(true){
             case depth > 90:
-                return "Blue";
+                return "Red";
             case depth > 70:
-                return "Purple";
-            //keep this pattern going until 10
+                return "Orange";
+            case depth > 50:
+                return "Yellow";
+            case depth > 30:
+                return "Light Green";
+            case depth > 10:
+                return "Green"
+            
             default:
                 return "Black";
         }
@@ -78,7 +84,7 @@ d3.json(geoData).then(data => {
             return new L.Circle(latlng, {
                 opacity: 1,
                 fillOpacity: 1,
-                color: "Red",
+                color: "Black",
                 radius : findRadius (feature.properties.mag),
                 fillColor: findColor (feature.geometry.coordinates[2]),
                 stroke: true,
@@ -103,8 +109,10 @@ d3.json(geoData).then(data => {
         const labels = [];
 
         div.innerHTML = `<h3>Earthquake Depth</h3>`;
-    };
-    legend.addto(myMap);
+        
+        return div;
+    };legend.addTo(myMap);
+  
 
 
 });
