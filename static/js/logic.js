@@ -35,6 +35,9 @@ const myMap = L.map("map", {
 
 
 
+
+
+
 const geoData = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson"
 
 
@@ -53,30 +56,30 @@ d3.json(geoData).then(data => {
     //};
 
     function findRadius (magnitude) {
-        //if (magnitude === 0) {
-            //return 1;
-        //}
+        if (magnitude === 0) {
+            return 1;
+        }
         return (magnitude * 200000);
         
     };
 
     function findColor(depth) {
         switch(true){
-            case depth > 90:
-                return "Red";
+           case depth > 90:
+               return "Red";
             case depth > 70:
-                return "Orange";
+               return "Orange";
             case depth > 50:
-                return "Yellow";
+               return "Yellow";
             case depth > 30:
-                return "Light Green";
+               return "Blue";
             case depth > 10:
-                return "Green"
+               return "Green"
             
             default:
-                return "Black";
-        }
-    }
+               return "Black";
+        };
+    };
 
     L.geoJson(data, {
         
@@ -96,19 +99,27 @@ d3.json(geoData).then(data => {
         onEachFeature: (feature, layer) => {
             layer.bindPopup("Magnitude: " + feature.properties.mag 
             + "<br> Depth: " + feature.geometry.coordinates[2] 
-            + "<br> Title: " + feature.properties.title
+            + "<br> Location: " + feature.properties.title
             )
     }
     }).addTo(myMap);
 
     //add legend here
-    const legend = L.control({ position: "bottomright", fillColor : "white"});
+    const legend = L.control({ position: "bottomright", fillColor : "White"});
     legend.onAdd = function() {
         const div = L.DomUtil.create("div", "info legend");
         const limits = ["<10", "30", "50", "70", "90"];
         const labels = [];
+        const colors = ["Green" , "Blue" , "Yellow", "Orange", "Red"]
+        
 
         div.innerHTML = `<h3>Earthquake Depth</h3>`;
+
+        limits.forEach(function(limit, index) {
+            labels.push("<li style=\"background-color:" + colors[index] + ";list-styoe-type: none" + "\">" + limits[index] + "</li>");
+        });
+
+        div.innerHTML += "<ul>" + labels.join("") + "</ul>";
         
         return div;
     };legend.addTo(myMap);
@@ -116,5 +127,3 @@ d3.json(geoData).then(data => {
 
 
 });
-
-
